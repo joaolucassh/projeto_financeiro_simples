@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Editar Lançamento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Lançamento</h1>
+
+        <form action="{{ url_for('editar', id=lanc.id) }}" method="POST" class="form-editar">
+            <label>Tipo:
+                <select name="tipo" required>
+                    <option value="Receita" {% if lanc.tipo == 'Receita' %}selected{% endif %}>Receita</option>
+                    <option value="Despesa" {% if lanc.tipo == 'Despesa' %}selected{% endif %}>Despesa</option>
+                </select>
+            </label>
+
+            <label>Descrição:
+                <input type="text" name="descricao" required maxlength="100" value="{{ lanc.descricao }}" />
+            </label>
+
+            <label>Valor (R$):
+                <input type="number" step="0.01" name="valor" required min="0" value="{{ lanc.valor }}" />
+            </label>
+
+            <button type="submit">Salvar</button>
+            <a href="{{ url_for('index') }}" class="btn-cancelar">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>
