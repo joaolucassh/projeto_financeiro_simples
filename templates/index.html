@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Controle Financeiro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Controle Financeiro</h1>
+
+        <form action="{{ url_for('novo') }}" method="POST" class="form-novo">
+            <label>Tipo:
+                <select name="tipo" required>
+                    <option value="Receita">Receita</option>
+                    <option value="Despesa">Despesa</option>
+                </select>
+            </label>
+
+            <label>Descrição:
+                <input type="text" name="descricao" required maxlength="100" />
+            </label>
+
+            <label>Valor (R$):
+                <input type="number" step="0.01" name="valor" required min="0" />
+            </label>
+
+            <button type="submit">Adicionar</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Descrição</th>
+                    <th>Valor (R$)</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lanc in lancamentos %}
+                <tr>
+                    <td>{{ lanc.tipo }}</td>
+                    <td>{{ lanc.descricao }}</td>
+                    <td>{{ "R$ {:,.2f}".format(lanc.valor) }}</td>
+                    <td>{{ lanc.data.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>
+                        <a href="{{ url_for('editar', id=lanc.id) }}" class="btn-editar">Editar</a>
+                        <a href="{{ url_for('deletar', id=lanc.id) }}" class="btn-deletar" onclick="return confirm('Confirma exclusão?');">Excluir</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" style="text-align:center;">Nenhum lançamento encontrado.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
